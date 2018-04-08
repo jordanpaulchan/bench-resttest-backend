@@ -1,0 +1,9 @@
+machine:
+  python:
+    version: 2.7.3
+dependencies:
+  pre:
+    - pip install requests
+test:
+  override:
+    - python -m unittest discover
