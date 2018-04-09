@@ -1,5 +1,7 @@
 import requests
 
+from itertools import groupby
+
 
 class Transaction(object):
     def __init__(self, date, amount):
@@ -29,7 +31,21 @@ class Transactions(object):
             self._validate_response(url, req)
 
     def sum_transactions(self):
+        """ Calculates the sum of all of the transactions """
+
         return sum(transaction.amount for transaction in self.transactions)
+
+    def calculate_running_balances(self):
+        """ Calculates the running balances of the transactions """
+
+        # Sort the transactions
+        sorted_transactions = sorted(self.transactions, key=lambda x: x.date)
+
+        # Group the transactions
+        grouped_transactions = groupby(sorted_transactions, lambda x: x.date)
+
+        # Return the sum of the group transactions
+        return self._reduce_transactions(grouped_transactions)
 
     def _validate_response(self, url, response):
         """ Validate the status code of the response """
@@ -72,4 +88,12 @@ class Transactions(object):
         return [
             Transaction(item['Date'], item['Amount'])
             for item in transactions
+        ]
+
+    def _reduce_transactions(self, transactions):
+        """ Reduce all of the transactions for each date """
+
+        return [
+            [date, sum(item.amount for item in items)]
+            for date, items in transactions
         ]
