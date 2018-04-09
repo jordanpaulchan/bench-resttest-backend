@@ -25,8 +25,7 @@ class Transactions(object):
         try:
             req = requests.get(request_url, timeout=10)
         except Exception as e:
-            # TODO: handle exceptions
-            print 'Request Failed'
+            print('Request Failed. Error: {}'.format(e))
         else:
             self._validate_response(url, req)
 
@@ -51,14 +50,17 @@ class Transactions(object):
         """ Validate the status code of the response """
 
         if not response.status_code == 200:
-            # TODO: handle non 200 case
+            # Log server errors
+            if response.status_code >= 500:
+                print('Server error: {}'.format(response.status_code))
+
+            # Let 404 errors pass for now because blank pages return 404
             return None
 
         try:
             data = response.json()
         except Exception as e:
-            # TODO: handle json exceptions
-            print 'Failed to parse json'
+            print('Failed to parse json. Error: {}'.format(e))
         else:
             self._process_response(url, data)
 
@@ -66,7 +68,7 @@ class Transactions(object):
         """ Save the transactions and recursively call the next page """
 
         if not self._validate_data(response):
-            # TODO: handle invalid data
+            print('Invalid response data')
             return None
 
         self.add_transactions(
