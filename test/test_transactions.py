@@ -1,7 +1,14 @@
 import unittest
 
 from transactions.transactions import Transaction, Transactions
-from data.data import transaction_data, transactions_response, response
+from data.data import transactions_response, response
+
+transaction_data = [
+    Transaction('2013-12-22', '-110.71'),
+    Transaction('2013-08-24', '-10.22'),
+    Transaction('2013-05-13', '117.53'),
+    Transaction('2013-03-19', '-60.90')
+]
 
 
 class TransactionTests(unittest.TestCase):
@@ -73,6 +80,15 @@ class TransactionsTests(unittest.TestCase):
 
     def test_serialize_transactions_empty(self):
         self.assertEqual(len(self.transactions._serialize_transactions([])), 0)
+
+    def test_sum_transactions(self):
+        self.transactions.add_transactions(transaction_data)
+        self.assertEqual(
+            self.transactions.sum_transactions(),
+            sum(item.amount for item in transaction_data))
+
+    def test_sum_transactions_empty(self):
+        self.assertEqual(self.transactions.sum_transactions(), 0)
 
 
 if __name__ == '__main__':

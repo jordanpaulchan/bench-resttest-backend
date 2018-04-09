@@ -28,6 +28,9 @@ class Transactions(object):
         else:
             self._validate_response(url, req)
 
+    def sum_transactions(self):
+        return sum(transaction.amount for transaction in self.transactions)
+
     def _validate_response(self, url, response):
         """ Validate the status code of the response """
 
