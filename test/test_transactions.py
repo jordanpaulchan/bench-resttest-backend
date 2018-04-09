@@ -51,7 +51,7 @@ class TransactionsTests(unittest.TestCase):
             len(self.transactions.transactions), len(transaction_data))
 
     def test_process_response(self):
-        self.transactions._process_response('', response)
+        self.transactions._process_response(response, '', 0)
         self.assertEqual(
             len(self.transactions.transactions),
             len(response['transactions']))
