@@ -11,4 +11,4 @@ if __name__ == '__main__':
     print('Running Balances:')
     running_balances = transactions.calculate_running_balances()
     for date, balance in running_balances:
-        print('{}: {}'.format(date, balance))
+        print('{0}: {1:.2f}'.format(date, balance))
