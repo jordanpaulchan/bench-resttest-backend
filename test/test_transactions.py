@@ -3,7 +3,7 @@ import unittest
 from itertools import groupby
 
 from transactions.transactions import Transaction, Transactions
-from data.data import transactions_response, response
+from test.data.data import transactions_response, response
 
 transaction_data = [
     Transaction('2013-12-22', '-110.71'),
